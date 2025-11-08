@@ -11,7 +11,7 @@ test('Softassertions', async ({page}) => {
 */
     //Soft assertion - failed soft assertions do not terminate further test execution but will mark test case as failed.
 
-    await expect.soft(page).toHaveTitle('Forwrdly');
+    await expect.soft(page).toHaveTitle('Forwardly');
 
     await expect.soft(page).toHaveURL('https://stag2.fly.tiptec.com/signin');
 })
