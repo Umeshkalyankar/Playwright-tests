@@ -1,10 +1,12 @@
 name: Playwright Tests
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:  # allows manual triggering from GitHub Actions tab
+    inputs:
+      testPath:
+        description: "Enter the test path or pattern (e.g. tests/Dropdown.spec.js or 'Login')"
+        required: true
+        default: "tests"  # runs all tests if you don’t provide a specific file
 
 jobs:
   test:
@@ -22,8 +24,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright Browsers
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test ${{ github.event.inputs.testPath }}
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
